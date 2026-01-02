@@ -3,7 +3,6 @@ using ApiEcommer.Repository;
 using ApiEcommer.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
-
 // Crea el builder para configurar la aplicación web
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 var dbConnection = builder.Configuration.GetConnectionString("ConexionSql");
 
 // Registra el contexto de base de datos en el contenedor de dependencias
-// UseSqlServer configura EF Core para usar SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConnection));
+
 // Inyecta el repositorio de categorías
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>(); // Inyecta el repositorio de categorías <>
-// Sin AutoMapper - usando mapeo manual
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+// Registra AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 // Registra los controladores de la API
 builder.Services.AddControllers();
 

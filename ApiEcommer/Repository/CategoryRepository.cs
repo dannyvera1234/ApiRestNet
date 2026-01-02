@@ -71,12 +71,11 @@ namespace ApiEcommer.Repository
         }
 
         // Obtiene una categoría específica por ID
-        public Category GetCategory(int categoryId)
+        public Category? GetCategory(int categoryId)
         {
             // FirstOrDefault() devuelve el primer elemento o null
             // ?? throw lanza excepción si no encuentra la categoría
-            return _db.Categories.FirstOrDefault(c => c.Id == categoryId) ??
-                   throw new InvalidOperationException($"La categoria {categoryId} no existe");
+            return _db.Categories.FirstOrDefault(c => c.Id == categoryId);
         }
 
         // Método privado para guardar cambios en la base de datos

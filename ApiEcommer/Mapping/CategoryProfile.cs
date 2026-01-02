@@ -1,28 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using ApiEcommer.Models;
 using ApiEcommer.Models.Dtos;
-using AutoMapper; // Librería para mapeo automático entre objetos
 
-namespace ApiEcommer.Mapping
+namespace ApiEcommer.Mapping;
+
+public class CategoryProfile : Profile
 {
-    /// <summary>
-    /// Perfil de AutoMapper para configurar el mapeo entre entidades Category y sus DTOs
-    /// Los perfiles definen cómo convertir un tipo de objeto a otro automáticamente
-    /// </summary>
-    public class CategoryProfile : Profile
+    public CategoryProfile()
     {
-        /// <summary>
-        /// Constructor que configura los mapeos para Category
-        /// </summary>
-        public CategoryProfile()
-        {
-            // Mapeo bidireccional entre Category (entidad) y CategoryDto (para lectura)
-            CreateMap<Category, CategoryDto>().ReverseMap();
-            
-            // Mapeo bidireccional entre Category (entidad) y CreateCategoryDto (para creación)
-            CreateMap<Category, CreateCategoryDto>().ReverseMap();
-        }
+        // Mapeo de Category a CategoryDto
+        CreateMap<Category, CategoryDto>();
+        
+        // Mapeo de CreateCategoryDto a Category
+        CreateMap<CreateCategoryDto, Category>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+        
+        // Mapeo de UpdateCategoryDto a Category (ignora Id y CreationDate)
+        CreateMap<UpdateCategoryDto, Category>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreationDate, opt => opt.Ignore());
     }
 }

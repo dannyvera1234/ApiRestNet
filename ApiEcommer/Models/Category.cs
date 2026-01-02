@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 public class Category
 {
+    // [Key] marca esta propiedad como clave primaria
+    // Entity Framework la configurará como IDENTITY (auto-incremento)
     [Key]
     public int Id { get; set; }
     [Required]
