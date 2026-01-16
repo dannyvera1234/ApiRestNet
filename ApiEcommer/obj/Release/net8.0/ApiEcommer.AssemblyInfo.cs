@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiEcommer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49574a93dfca98578e2854b25681287807926b9c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aefdc51c44a8daaa23046f7b050e3bf722c48139")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiEcommer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiEcommer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

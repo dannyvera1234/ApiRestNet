@@ -8,8 +8,9 @@ public class ApplicationDbContext : DbContext
     // Constructor que recibe las opciones de configuración de la BD
     // y las pasa a la clase base DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-    
+
     // DbSet representa una tabla en la base de datos
     // Categories será el nombre de la tabla para la entidad Category
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
 }

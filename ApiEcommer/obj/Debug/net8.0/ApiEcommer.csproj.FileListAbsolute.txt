@@ -149,4 +149,3 @@ C:\proyectos\.net\ApiEcommer\obj\Debug\net8.0\refint\ApiEcommer.dll
 C:\proyectos\.net\ApiEcommer\obj\Debug\net8.0\ApiEcommer.pdb
 C:\proyectos\.net\ApiEcommer\obj\Debug\net8.0\ApiEcommer.genruntimeconfig.cache
 C:\proyectos\.net\ApiEcommer\obj\Debug\net8.0\ref\ApiEcommer.dll
-C:\proyectos\.net\ApiEcommer\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

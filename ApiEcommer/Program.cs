@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Inyecta el repositorio de categorías
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Registra AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
