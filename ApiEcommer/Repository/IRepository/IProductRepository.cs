@@ -13,7 +13,7 @@ namespace ApiEcommer.Repository.IRepository
         Product? GetProduct(int id);
         bool BuyProduct(string name, int quantity);
         bool ProductExists(int id);
-        bool ProductExists(string name);
+        bool ProductoExists(string name);
         bool CreateProduct(Product product);
         bool UpdateProduct(Product product);
         bool DeleteProduct(Product product);

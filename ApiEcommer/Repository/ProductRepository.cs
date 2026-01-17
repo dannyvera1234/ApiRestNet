@@ -41,7 +41,7 @@ namespace ApiEcommer.Repository
             if (product == null)
                 return false;
 
-            if (ProductExists(product.Name))
+            if (ProductoExists(product.Name))
                 return false;
 
             product.CreationDate = DateTime.Now;
@@ -83,7 +83,7 @@ namespace ApiEcommer.Repository
 
             return _db.Products.Any(p => p.ProductId == id);
         }
-        public bool ProductExists(string name)
+        public bool ProductoExists(string name)
         {
             if (name == null || name == string.Empty)
                 return false;

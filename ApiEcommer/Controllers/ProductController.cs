@@ -35,12 +35,9 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
         if (id <= 0)
             return BadRequest(" el id no puede ser negativo.");
 
-        if (!_productRepository.ProductExists(id))
-            return BadRequest("no existe el producto");
-
         var product = _productRepository.GetProduct(id);
         if (product == null)
-            return NotFound();
+            return NotFound($"el producto con el id {id} no fue encontrado");
 
         var productDto = _mapper.Map<ProductDto>(product);
         return Ok(productDto);
@@ -53,11 +50,10 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
     public IActionResult CreateProduct([FromBody] CreateProductDto productDto)
     {
         if (productDto == null)
-        {
             return BadRequest(ModelState);
-        }
 
-        if (_productRepository.ProductExists(productDto.Name))
+
+        if (_productRepository.ProductoExists(productDto.Name))
         {
             ModelState.AddModelError("", "Product already exists");
             return StatusCode(409, ModelState);
@@ -70,12 +66,12 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
         }
 
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
+
         var product = _mapper.Map<Product>(productDto);
         _productRepository.CreateProduct(product);
         var productDtoResponse = _mapper.Map<ProductDto>(product);
+
         return CreatedAtRoute("GetProduct", new { id = product.ProductId }, productDtoResponse);
     }
 
@@ -83,7 +79,7 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
 
 
 
-    [HttpPatch("{id:int}", Name = "UpdateProduct")]
+    [HttpPut("{id:int}", Name = "UpdateProduct")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,29 +90,27 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
         if (updateProductDto == null)
             return BadRequest("los datos son requeridos");
 
-        if (!ModelState.IsValid)
-            return Conflict(ModelState);
+        if (!_productRepository.ProductExists(id))
+            return NotFound($"el producto con id {id} no existe");
 
-        var existeProduct = _productRepository.GetProduct(id);
+        if (!_categoryRepository.CategoryExists(updateProductDto.CategoryId))
+            return NotFound($"la categoria {updateProductDto.CategoryId} no existe ");
 
-        if (existeProduct == null)
-            return NotFound("no existe el producto");
 
-        if (existeProduct.Name != updateProductDto.Name && _productRepository.ProductExists(updateProductDto.Name))
+
+
+
+        var updateProduct = _mapper.Map<Product>(updateProductDto);
+        updateProduct.ProductId = id;
+
+        if (!_productRepository.UpdateProduct(updateProduct))
         {
-
-            ModelState.AddModelError("", "el producto ya existe");
-            return Conflict(ModelState);
-
+            ModelState.AddModelError("CustomError", $"algo salio mal al actualuizar el resgistro");
+            return StatusCode(500, ModelState);
         }
 
-        _mapper.Map(updateProductDto, existeProduct);
 
-        _productRepository.UpdateProduct(existeProduct);
-
-        var responseDto = _mapper.Map<ProductDto>(existeProduct);
-
-        return Ok(responseDto);
+        return NoContent();
 
     }
     [HttpDelete("{id:int}", Name = "DeleteProduct")]
@@ -166,5 +160,32 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
 
         var productsDto = _mapper.Map<List<ProductDto>>(products);
         return Ok(productsDto);
+    }
+
+    [HttpPatch("BuyProduct/{name}/{quantity}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult BuyProduct(string name, int quantity)
+    {
+        if (string.IsNullOrEmpty(name))
+            return BadRequest("el nombre es requerido");
+
+        if (quantity <= 0)
+            return NotFound("la catidad debe se mayor a cero");
+
+        var foundProduct = _productRepository.ProductoExists(name);
+        if (!foundProduct)
+            return NotFound($"el producto con el nombre no exisste.{name}");
+
+
+        if (!_productRepository.BuyProduct(name, quantity))
+        {
+            ModelState.AddModelError("CustomError", $"No se pudo comprar el producto {name} o la cnartida solcuda ess mayor");
+            return BadRequest(ModelState);
+        }
+
+        var units = quantity == 1 ? "unidad" : "unidades";
+        return Ok($"se compro la {quantity} {units} del prodcut {name}");
+
     }
 }
