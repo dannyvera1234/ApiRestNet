@@ -1,4 +1,5 @@
 // Importa las clases necesarias de Entity Framework Core
+using ApiEcommer.Models;
 using Microsoft.EntityFrameworkCore;
 
 // Clase que representa el contexto de la base de datos
@@ -13,4 +14,5 @@ public class ApplicationDbContext : DbContext
     // Categories será el nombre de la tabla para la entidad Category
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<User> Users { get; set; }
 }
